@@ -77,6 +77,6 @@ export const PRODUCTS: ProductType[] = [
     price: 400000,
     countInStock: 0,
     rating: 4,
-    numReviews: 12,
+    numReviews: 0,
   },
 ];

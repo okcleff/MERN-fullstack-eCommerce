@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 import { Card } from "react-bootstrap";
 import Rating from "./Rating";
 
+// functions
+import { numberWithCommas } from "../functions/numberWithCommas";
+
 // types
 import { ProductType } from "../types";
 
@@ -13,7 +16,7 @@ interface ProductProps {
 }
 
 const Product: React.FC<ProductProps> = ({ product }) => {
-  const { _id, image, name, price } = product;
+  const { _id, image, name, rating, numReviews, price } = product;
 
   return (
     <Card className="my-3 p-3 rounded">
@@ -29,13 +32,10 @@ const Product: React.FC<ProductProps> = ({ product }) => {
         </Link>
 
         <Card.Text as="div">
-          <Rating
-            value={product.rating}
-            text={`${product.numReviews} reviews`}
-          />
+          <Rating value={rating} text={`${numReviews} reviews`} />
         </Card.Text>
 
-        <Card.Text as="h4">₩{price}</Card.Text>
+        <Card.Text as="h4">₩{numberWithCommas(price)}</Card.Text>
       </Card.Body>
     </Card>
   );

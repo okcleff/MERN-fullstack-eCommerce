@@ -6,7 +6,7 @@ import Product from "../components/Product";
 
 import { PRODUCTS } from "../products";
 
-const Home = () => {
+const MainPage = () => {
   return (
     <>
       <h1>Latest Products</h1>
@@ -22,4 +22,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default MainPage;
