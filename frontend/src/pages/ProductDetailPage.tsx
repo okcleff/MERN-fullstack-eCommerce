@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+
+// lib
+import axios from "axios";
 
 // components
 import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap";
@@ -11,12 +14,31 @@ import { numberWithCommas } from "../functions/numberWithCommas";
 // types
 import { ProductType } from "../types";
 
-import { PRODUCTS } from "../products";
-
 const ProductDetailPage = () => {
   const { productId } = useParams();
 
-  const product = PRODUCTS.find((p) => p._id === productId) as ProductType;
+  const [product, setProduct] = useState<ProductType>({
+    _id: "",
+    name: "",
+    image: "",
+    description: "",
+    brand: "",
+    category: "",
+    price: 0,
+    countInStock: 0,
+    rating: 0,
+    numReviews: 0,
+  });
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const { data } = await axios.get(`/api/products/${productId}`);
+      setProduct(data);
+    };
+
+    fetchProduct();
+  }, [productId]);
+
   const { image, name, rating, numReviews, price, description, countInStock } =
     product;
 
