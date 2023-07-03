@@ -12,13 +12,14 @@ import Rating from "../components/Rating";
 import { numberWithCommas } from "../functions/numberWithCommas";
 
 // types
-import { ProductType } from "../types";
+import { IProduct } from "../types";
 
 const ProductDetailPage = () => {
   const { productId } = useParams();
 
-  const [product, setProduct] = useState<ProductType>({
+  const [product, setProduct] = useState<IProduct>({
     _id: "",
+    user: "",
     name: "",
     image: "",
     description: "",
@@ -27,6 +28,7 @@ const ProductDetailPage = () => {
     price: 0,
     countInStock: 0,
     rating: 0,
+    reviews: [],
     numReviews: 0,
   });
 

@@ -8,6 +8,8 @@
     "server": "nodemon --exec ts-node backend/server.ts",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "data:import": "ts-node backend/seeder.ts",
+    "data:destroy": "ts-node backend/seeder.ts -d",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

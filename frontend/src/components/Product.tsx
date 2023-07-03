@@ -9,10 +9,10 @@ import Rating from "./Rating";
 import { numberWithCommas } from "../functions/numberWithCommas";
 
 // types
-import { ProductType } from "../types";
+import { IProduct } from "../types";
 
 interface ProductProps {
-  product: ProductType;
+  product: IProduct;
 }
 
 const Product: React.FC<ProductProps> = ({ product }) => {

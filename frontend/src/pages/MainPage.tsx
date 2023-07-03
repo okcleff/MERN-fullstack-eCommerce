@@ -8,15 +8,15 @@ import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
 
 // types
-import { ProductType } from "../types";
+import { IProduct } from "../types";
 
 const MainPage = () => {
-  const [products, setProducts] = useState<ProductType[] | []>([]);
+  const [products, setProducts] = useState<IProduct[] | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
       const { data } = await axios.get("/api/products");
-      setProducts(data);
+      setProducts(data.products);
     };
 
     fetchProducts();
