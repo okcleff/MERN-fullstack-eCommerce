@@ -1,6 +1,15 @@
-import { ProductType } from "../types";
-
-export const PRODUCTS: ProductType[] = [
+export const PRODUCTS: {
+  _id: string;
+  name: string;
+  image: string;
+  description: string;
+  brand: string;
+  category: string;
+  price: number;
+  countInStock: number;
+  rating: number;
+  numReviews: number;
+}[] = [
   {
     _id: "1",
     name: "Airpods Wireless Bluetooth Headphones",
