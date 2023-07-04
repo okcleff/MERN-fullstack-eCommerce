@@ -7,10 +7,6 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-// redux
-import { Provider } from "react-redux";
-import store from "./store";
-
 import App from "./App";
 import MainPage from "./pages/MainPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
@@ -32,8 +28,8 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   // <React.StrictMode>
-  <Provider store={store}>
-    <RouterProvider router={router} />
-  </Provider>
+
+  <RouterProvider router={router} />
+
   // </React.StrictMode>
 );

@@ -1,33 +1,49 @@
-import React, { useEffect, useState } from "react";
-
 // lib
-import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 // components
 import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
 
+// APIs
+import { getProducts } from "../modules/api";
+
 // types
 import { IProduct } from "../types";
 
-const MainPage = () => {
-  const [products, setProducts] = useState<IProduct[] | null>(null);
+interface ProductData {
+  data: {
+    products: IProduct[];
+  };
+}
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const { data } = await axios.get("/api/products");
-      setProducts(data.products);
+interface ApiError {
+  response: {
+    data: {
+      message: string;
     };
+  };
+}
 
-    fetchProducts();
-  }, []);
+const MainPage = () => {
+  // const { data: products, error } = useQuery<IProduct[], AxiosError>(
+  const { data, error, isLoading } = useQuery<ProductData, ApiError>(
+    ["product"],
+    getProducts
+  );
+
+  if (isLoading) return <h2>Loading...</h2>;
+
+  if (error) {
+    return <h2>{error.response.data.message}</h2>;
+  }
 
   return (
     <>
       <h1>Latest Products</h1>
 
       <Row>
-        {products?.map((product) => (
+        {data?.data.products.map((product) => (
           <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
             <Product product={product} />
           </Col>
