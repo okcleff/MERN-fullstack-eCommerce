@@ -1,18 +1,22 @@
 import asyncHandler from "../middleware/asyncHandler";
 import Product from "../models/productModel";
 
-// @desc    Fetch all products
-// @route   GET /api/products
-// @access  Public
+/**
+  @desc    Fetch all products
+  @route   GET /api/products
+  @access  Public
+*/
 const getProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({});
 
   res.json({ products });
 });
 
-// @desc    Fetch single product
-// @route   GET /api/products/:id
-// @access  Public
+/**
+  @desc    Fetch single product
+  @route   GET /api/products/:id
+  @access  Public
+*/
 const getProductById = asyncHandler(async (req, res) => {
   // NOTE: checking for valid ObjectId to prevent CastError moved to separate
   // middleware. See README for more info.
