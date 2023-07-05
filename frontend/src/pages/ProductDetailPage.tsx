@@ -7,6 +7,8 @@ import { useQuery } from "@tanstack/react-query";
 // components
 import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap";
 import Rating from "../components/Rating";
+import Loader from "../components/Loader";
+import Message from "../components/Message";
 
 // functions
 import { numberWithCommas } from "../functions/numberWithCommas";
@@ -37,10 +39,10 @@ const ProductDetailPage = () => {
     () => getProductDetails(productId as string)
   );
 
-  if (isLoading) return <h2>Loading...</h2>;
+  if (isLoading) return <Loader />;
 
   if (error) {
-    return <h2>{error.response.data.message}</h2>;
+    return <Message variant="danger">{error.response.data.message}</Message>;
   }
 
   const { image, name, rating, numReviews, price, description, countInStock } =

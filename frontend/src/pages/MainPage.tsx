@@ -4,6 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 // components
 import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
+import Loader from "../components/Loader";
+import Message from "../components/Message";
 
 // APIs
 import { getProducts } from "../modules/api";
@@ -31,10 +33,10 @@ const MainPage = () => {
     getProducts
   );
 
-  if (isLoading) return <h2>Loading...</h2>;
+  if (isLoading) return <Loader />;
 
   if (error) {
-    return <h2>{error.response.data.message}</h2>;
+    return <Message variant="danger">{error.response.data.message}</Message>;
   }
 
   return (
