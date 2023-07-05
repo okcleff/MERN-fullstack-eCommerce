@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useParams, Link } from "react-router-dom";
 
 // lib
-import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 // components
 import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap";
@@ -11,38 +11,40 @@ import Rating from "../components/Rating";
 // functions
 import { numberWithCommas } from "../functions/numberWithCommas";
 
+// APIs
+import { getProductDetails } from "../modules/api";
+
 // types
 import { IProduct } from "../types";
+
+interface ProductData {
+  data: IProduct;
+}
+
+interface ApiError {
+  response: {
+    data: {
+      message: string;
+    };
+  };
+}
 
 const ProductDetailPage = () => {
   const { productId } = useParams();
 
-  const [product, setProduct] = useState<IProduct>({
-    _id: "",
-    user: "",
-    name: "",
-    image: "",
-    description: "",
-    brand: "",
-    category: "",
-    price: 0,
-    countInStock: 0,
-    rating: 0,
-    reviews: [],
-    numReviews: 0,
-  });
+  const { data, error, isLoading } = useQuery<ProductData, ApiError>(
+    ["productDetail"],
+    () => getProductDetails(productId as string)
+  );
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      const { data } = await axios.get(`/api/products/${productId}`);
-      setProduct(data);
-    };
+  if (isLoading) return <h2>Loading...</h2>;
 
-    fetchProduct();
-  }, [productId]);
+  if (error) {
+    return <h2>{error.response.data.message}</h2>;
+  }
 
   const { image, name, rating, numReviews, price, description, countInStock } =
-    product;
+    data.data;
 
   return (
     <>

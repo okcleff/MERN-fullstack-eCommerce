@@ -26,7 +26,6 @@ interface ApiError {
 }
 
 const MainPage = () => {
-  // const { data: products, error } = useQuery<IProduct[], AxiosError>(
   const { data, error, isLoading } = useQuery<ProductData, ApiError>(
     ["product"],
     getProducts

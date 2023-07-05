@@ -15,4 +15,9 @@ const getProducts = async () => {
   return response;
 };
 
-export { getProducts };
+const getProductDetails = async (productId: string) => {
+  const response = await instance.get(`${PRODUCTS_URL}/${productId}`);
+  return response;
+};
+
+export { getProducts, getProductDetails };
