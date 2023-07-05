@@ -6,10 +6,13 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./store";
 
 import App from "./App";
 import MainPage from "./pages/MainPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
+import CartPage from "./pages/CartPage";
 
 import "./assets/styles/bootstrap.custom.css";
 import "./assets/styles/index.css";
@@ -19,6 +22,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<App />}>
       <Route index path="/" element={<MainPage />} />
       <Route path="/product/:productId" element={<ProductDetailPage />} />
+      <Route path="/cart" element={<CartPage />} />
     </Route>
   )
 );
@@ -28,8 +32,8 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   // <React.StrictMode>
-
-  <RouterProvider router={router} />
-
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
   // </React.StrictMode>
 );

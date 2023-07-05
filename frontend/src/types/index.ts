@@ -19,3 +19,17 @@ export interface IProduct {
   price: number;
   countInStock: number;
 }
+
+export interface ICartItem extends IProduct {
+  qty: number;
+}
+
+export interface ICart {
+  cartItems: ICartItem[];
+  shippingAddress: string[];
+  paymentMethod: string;
+  itemsPrice: number;
+  shippingPrice: number;
+  taxPrice: number;
+  totalPrice: number;
+}
