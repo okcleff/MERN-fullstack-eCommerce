@@ -6,7 +6,7 @@ import { Card } from "react-bootstrap";
 import Rating from "./Rating";
 
 // functions
-import { numberWithCommas } from "../functions/numberWithCommas";
+import { numberWithCommas } from "../utils/numberWithCommas";
 
 // types
 import { IProduct } from "../types";

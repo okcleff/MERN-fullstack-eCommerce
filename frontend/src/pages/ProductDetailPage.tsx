@@ -23,7 +23,7 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../slices/cartSlice";
 
 // functions
-import { numberWithCommas } from "../functions/numberWithCommas";
+import { numberWithCommas } from "../utils/numberWithCommas";
 
 // APIs
 import { getProductDetails } from "../modules/api";

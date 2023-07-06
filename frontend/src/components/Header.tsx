@@ -15,8 +15,6 @@ import { ICart } from "../types";
 const Header = () => {
   const { cartItems } = useSelector((state: { cart: ICart }) => state.cart);
 
-  console.log(cartItems);
-
   return (
     <header>
       <Navbar bg="dark" variant="dark" expand="md" collapseOnSelect>
