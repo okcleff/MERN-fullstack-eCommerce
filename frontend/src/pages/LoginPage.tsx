@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../slices/authSlice";
 
 // APIs
-import { login } from "../modules/api";
+import { postLogin } from "../modules/api";
 
 // types
 import { IUserInfo } from "../types";
@@ -47,33 +47,30 @@ const LoginPage = () => {
   const sp = new URLSearchParams(search);
   const redirect = sp.get("redirect") || "/";
 
-  const { mutate, isLoading } = useMutation<
-    ILoginResponse,
-    ApiError,
-    { email: string; password: string }
-  >(login);
-
   useEffect(() => {
     if (userInfo) {
       navigate(redirect);
     }
   }, [navigate, redirect, userInfo]);
 
+  const { mutate: mutateLogin, isLoading } = useMutation<
+    ILoginResponse,
+    ApiError,
+    { email: string; password: string }
+  >(postLogin, {
+    onSuccess: (response) => {
+      dispatch(setCredentials(response.data));
+      navigate(redirect);
+    },
+    onError: (error) => {
+      toast.error(error?.response.data.message);
+    },
+  });
+
   const submitHandler = async (e: any) => {
     e.preventDefault();
 
-    mutate(
-      { email, password },
-      {
-        onSuccess: (response) => {
-          dispatch(setCredentials(response.data));
-          navigate(redirect);
-        },
-        onError: (error) => {
-          toast.error(error?.response.data.message);
-        },
-      }
-    );
+    mutateLogin({ email, password });
   };
 
   return (

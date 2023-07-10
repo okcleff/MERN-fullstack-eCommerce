@@ -1,13 +1,22 @@
+import { useNavigate } from "react-router-dom";
+
 // components
 import { Navbar, Nav, NavDropdown, Container, Badge } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
+// lib
+import { useMutation } from "@tanstack/react-query";
+
 // redux
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../slices/authSlice";
 
 // assets
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import logo from "../assets/logo.png";
+
+// APIs
+import { postLogout } from "../modules/api";
 
 // types
 import { ICart, IUserInfo } from "../types";
@@ -18,7 +27,18 @@ const Header = () => {
     (state: { auth: { userInfo: IUserInfo } }) => state.auth
   );
 
-  const logoutHandler = () => {};
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { mutate: mutateLogout } = useMutation(postLogout, {
+    onSuccess: () => {
+      dispatch(logout());
+      navigate("/login");
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
   return (
     <header>
@@ -57,7 +77,7 @@ const Header = () => {
                     <LinkContainer to="/profile">
                       <NavDropdown.Item>Profile</NavDropdown.Item>
                     </LinkContainer>
-                    <NavDropdown.Item onClick={logoutHandler}>
+                    <NavDropdown.Item onClick={() => mutateLogout()}>
                       Logout
                     </NavDropdown.Item>
                   </NavDropdown>

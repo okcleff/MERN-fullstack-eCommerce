@@ -20,9 +20,14 @@ const getProductDetails = async (productId: string) => {
   return response;
 };
 
-const login = async (body: { email: string; password: string }) => {
+const postLogin = async (body: { email: string; password: string }) => {
   const response = await instance.post(`${USERS_URL}/login`, body);
   return response;
 };
 
-export { getProducts, getProductDetails, login };
+const postLogout = async () => {
+  const response = await instance.post(`${USERS_URL}/logout`);
+  return response;
+};
+
+export { getProducts, getProductDetails, postLogin, postLogout };

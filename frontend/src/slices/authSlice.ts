@@ -17,7 +17,7 @@ const authSlice = createSlice({
       const expirationTime = new Date().getTime() + 30 * 24 * 60 * 60 * 1000; // 30 days
       localStorage.setItem("expirationTime", expirationTime + "");
     },
-    logout: (state, action) => {
+    logout: (state) => {
       state.userInfo = null;
       localStorage.removeItem("userInfo");
       localStorage.removeItem("expirationTime");
