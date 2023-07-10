@@ -5,22 +5,22 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
+// redux
+import { useDispatch, useSelector } from "react-redux";
+import { setCredentials } from "../slices/authSlice";
+
 // components
 import { Form, Button, Row, Col } from "react-bootstrap";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
 
-// redux
-import { useDispatch, useSelector } from "react-redux";
-import { setCredentials } from "../slices/authSlice";
-
 // APIs
-import { postLogin } from "../modules/api";
+import { postSignup } from "../modules/api";
 
 // types
 import { IUserInfo } from "../types";
 
-interface ILoginResponse {
+interface ISignupResponse {
   data: IUserInfo;
 }
 
@@ -32,12 +32,32 @@ interface ApiError {
   };
 }
 
-const LoginPage = () => {
+const SignupPage = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { mutate, isLoading } = useMutation<
+    ISignupResponse,
+    ApiError,
+    {
+      name: string;
+      email: string;
+      password: string;
+    }
+  >(postSignup, {
+    onSuccess: (response) => {
+      dispatch(setCredentials(response.data));
+      navigate(redirect);
+    },
+    onError: (error) => {
+      toast.error(error.response.data.message);
+    },
+  });
 
   const { userInfo } = useSelector(
     (state: { auth: { userInfo: IUserInfo } }) => state.auth
@@ -53,33 +73,34 @@ const LoginPage = () => {
     }
   }, [navigate, redirect, userInfo]);
 
-  const { mutate: mutateLogin, isLoading } = useMutation<
-    ILoginResponse,
-    ApiError,
-    { email: string; password: string }
-  >(postLogin, {
-    onSuccess: (response) => {
-      dispatch(setCredentials(response.data));
-      navigate(redirect);
-    },
-    onError: (error) => {
-      toast.error(error.response.data.message);
-    },
-  });
-
   const submitHandler = async (e: any) => {
     e.preventDefault();
 
-    mutateLogin({ email, password });
+    if (password !== confirmPassword) {
+      return toast.error("Passwords do not match");
+    }
+
+    mutate({ name, email, password });
   };
 
   return (
     <FormContainer>
-      <h1>로그인하기</h1>
-
+      <h1>회원가입</h1>
       <Form onSubmit={submitHandler}>
+        <Form.Group className="my-2" controlId="name">
+          <Form.Label>이름</Form.Label>
+
+          <Form.Control
+            type="name"
+            placeholder="Enter name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
+
         <Form.Group className="my-2" controlId="email">
-          <Form.Label>Email Address</Form.Label>
+          <Form.Label>이메일</Form.Label>
+
           <Form.Control
             type="email"
             placeholder="Enter email"
@@ -89,7 +110,8 @@ const LoginPage = () => {
         </Form.Group>
 
         <Form.Group className="my-2" controlId="password">
-          <Form.Label>Password</Form.Label>
+          <Form.Label>비밀번호</Form.Label>
+
           <Form.Control
             type="password"
             placeholder="Enter password"
@@ -98,8 +120,19 @@ const LoginPage = () => {
           ></Form.Control>
         </Form.Group>
 
+        <Form.Group className="my-2" controlId="confirmPassword">
+          <Form.Label>Confirm Password</Form.Label>
+
+          <Form.Control
+            type="password"
+            placeholder="Confirm password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
+
         <Button disabled={isLoading} type="submit" variant="primary">
-          로그인
+          가입하기
         </Button>
 
         {isLoading && <Loader />}
@@ -107,9 +140,9 @@ const LoginPage = () => {
 
       <Row className="py-3">
         <Col>
-          처음 방문하셨나요?{" "}
-          <Link to={redirect ? `/signup?redirect=${redirect}` : "/signup"}>
-            회원가입
+          이미 계정이 있으신가요?{" "}
+          <Link to={redirect ? `/login?redirect=${redirect}` : "/login"}>
+            로그인
           </Link>
         </Col>
       </Row>
@@ -117,4 +150,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;
