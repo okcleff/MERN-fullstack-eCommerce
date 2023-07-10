@@ -33,3 +33,10 @@ export interface ICart {
   taxPrice: number;
   totalPrice: number;
 }
+
+export interface IUserInfo {
+  _id: string;
+  email: string;
+  isAdmin: boolean;
+  name: string;
+}

@@ -20,4 +20,9 @@ const getProductDetails = async (productId: string) => {
   return response;
 };
 
-export { getProducts, getProductDetails };
+const login = async (body: { email: string; password: string }) => {
+  const response = await instance.post(`${USERS_URL}/login`, body);
+  return response;
+};
+
+export { getProducts, getProductDetails, login };

@@ -13,6 +13,7 @@ import App from "./App";
 import MainPage from "./pages/MainPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import CartPage from "./pages/CartPage";
+import LoginPage from "./pages/LoginPage";
 
 import "./assets/styles/bootstrap.custom.css";
 import "./assets/styles/index.css";
@@ -23,6 +24,7 @@ const router = createBrowserRouter(
       <Route index path="/" element={<MainPage />} />
       <Route path="/product/:productId" element={<ProductDetailPage />} />
       <Route path="/cart" element={<CartPage />} />
+      <Route path="/login" element={<LoginPage />} />
     </Route>
   )
 );
