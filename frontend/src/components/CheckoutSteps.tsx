@@ -2,6 +2,12 @@ import React from "react";
 import { Nav } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
+const STEPS = {
+  step1: "배송정보 입력",
+  step2: "결제정보 입력",
+  step3: "주문하기",
+};
+
 interface CheckoutStepsProps {
   step1?: boolean;
   step2?: boolean;
@@ -18,30 +24,30 @@ const CheckoutSteps: React.FC<CheckoutStepsProps> = ({
       <Nav.Item>
         {step1 ? (
           <LinkContainer to="/shipping">
-            <Nav.Link>배송정보 입력</Nav.Link>
+            <Nav.Link>{STEPS.step1}</Nav.Link>
           </LinkContainer>
         ) : (
-          <Nav.Link disabled>배송정보 입력</Nav.Link>
+          <Nav.Link disabled>{STEPS.step1}</Nav.Link>
         )}
       </Nav.Item>
 
       <Nav.Item>
         {step2 ? (
           <LinkContainer to="/payment">
-            <Nav.Link>결제정보 입력</Nav.Link>
+            <Nav.Link>{STEPS.step2}</Nav.Link>
           </LinkContainer>
         ) : (
-          <Nav.Link disabled>결제정보 입력</Nav.Link>
+          <Nav.Link disabled>{STEPS.step2}</Nav.Link>
         )}
       </Nav.Item>
 
       <Nav.Item>
         {step3 ? (
           <LinkContainer to="/placeorder">
-            <Nav.Link>주문하기</Nav.Link>
+            <Nav.Link>{STEPS.step3}</Nav.Link>
           </LinkContainer>
         ) : (
-          <Nav.Link disabled>주문하기</Nav.Link>
+          <Nav.Link disabled>{STEPS.step3}</Nav.Link>
         )}
       </Nav.Item>
     </Nav>

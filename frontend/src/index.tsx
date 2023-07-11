@@ -17,6 +17,7 @@ import CartPage from "./pages/CartPage";
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import ShippingPage from "./pages/ShippingPage";
+import PaymentPage from "./pages/PaymentPage";
 
 import "./assets/styles/bootstrap.custom.css";
 import "./assets/styles/index.css";
@@ -32,6 +33,7 @@ const router = createBrowserRouter(
 
       <Route path="" element={<PrivateRoute />}>
         <Route path="/shipping" element={<ShippingPage />} />
+        <Route path="/payment" element={<PaymentPage />} />
       </Route>
     </Route>
   )
