@@ -26,7 +26,12 @@ export interface ICartItem extends IProduct {
 
 export interface ICart {
   cartItems: ICartItem[];
-  shippingAddress: string[];
+  shippingAddress: {
+    address: string;
+    city: string;
+    postalCode: string;
+    country: string;
+  };
   paymentMethod: string;
   itemsPrice: number;
   shippingPrice: number;
