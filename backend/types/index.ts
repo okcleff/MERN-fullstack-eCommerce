@@ -1,3 +1,4 @@
+import { Request } from "express";
 import { Schema } from "mongoose";
 
 export interface IReview {
@@ -22,6 +23,7 @@ export interface IProduct {
 }
 
 export interface IUser {
+  _id: string;
   name: string;
   email: string;
   password: string;
@@ -29,7 +31,14 @@ export interface IUser {
   matchPassword: (enteredPassword: string) => Promise<boolean>;
 }
 
+export interface IUserRequest extends Request {
+  user: {
+    _id: string;
+  };
+}
+
 export interface IOrderItem {
+  _id: string;
   name: string;
   qty: number;
   image: string;
@@ -58,7 +67,7 @@ export interface IOrder {
   shippingPrice: number;
   totalPrice: number;
   isPaid: boolean;
-  paidAt?: Date;
+  paidAt?: number;
   isDelivered: boolean;
-  deliveredAt?: Date;
+  deliveredAt?: number;
 }

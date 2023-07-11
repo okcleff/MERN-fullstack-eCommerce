@@ -134,11 +134,11 @@ const CartPage = () => {
               >
                 결제하기
               </Button>
+
               <Button
                 type="button"
                 className="btn-block"
                 variant="light"
-                disabled={cartItems.length === 0}
                 onClick={() => navigate("/")}
               >
                 계속 쇼핑하기

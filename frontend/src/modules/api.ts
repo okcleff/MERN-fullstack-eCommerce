@@ -1,5 +1,8 @@
 import axios from "axios";
 
+// types
+import { IOrder } from "../types";
+
 export const BASE_URL = ""; // If using proxy
 export const PRODUCTS_URL = "/api/products";
 export const USERS_URL = "/api/users";
@@ -39,4 +42,48 @@ const postLogout = async () => {
   return response;
 };
 
-export { getProducts, getProductDetails, postSignup, postLogin, postLogout };
+const createOrder = async (body: IOrder) => {
+  const response = await instance.post(`${ORDERS_URL}`, body);
+  return response;
+};
+
+const getOrderDetails = async (id: string) => {
+  const response = await instance.get(`${ORDERS_URL}/${id}`);
+  return response;
+};
+
+const putOrderToPaid = async ({
+  id,
+  details,
+}: {
+  id: string;
+  details: any;
+}) => {
+  const response = await instance.put(`${ORDERS_URL}/${id}/pay`, {
+    ...details,
+  });
+  return response;
+};
+
+const putOrderDelivery = async (id: string) => {
+  const response = await instance.put(`${ORDERS_URL}/${id}/deliver`);
+  return response;
+};
+
+const getPaypalClientId = async () => {
+  const response = await instance.get(`${PAYPAL_URL}`);
+  return response;
+};
+
+export {
+  getProducts,
+  getProductDetails,
+  postSignup,
+  postLogin,
+  postLogout,
+  createOrder,
+  getOrderDetails,
+  putOrderToPaid,
+  putOrderDelivery,
+  getPaypalClientId,
+};

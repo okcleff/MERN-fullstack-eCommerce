@@ -21,6 +21,7 @@ export interface IProduct {
 }
 
 export interface ICartItem extends IProduct {
+  product: string;
   qty: number;
 }
 
@@ -44,4 +45,27 @@ export interface IUserInfo {
   email: string;
   isAdmin: boolean;
   name: string;
+}
+
+export interface IOrder {
+  orderItems: ICartItem[];
+  shippingAddress: {
+    address: string;
+    city: string;
+    postalCode: string;
+    country: string;
+  };
+  paymentMethod: string;
+  itemsPrice: number;
+  shippingPrice: number;
+  taxPrice: number;
+  totalPrice: number;
+}
+
+export interface ApiError {
+  response: {
+    data: {
+      message: string;
+    };
+  };
 }

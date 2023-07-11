@@ -2,12 +2,7 @@ import { Request, Response } from "express";
 import asyncHandler from "../middleware/asyncHandler";
 import generateToken from "../utils/generateToken";
 import User from "../models/userModel";
-
-interface IUserRequest extends Request {
-  user: {
-    _id: string;
-  };
-}
+import { IUserRequest } from "../types";
 
 /**
   @desc    Auth user & get token
