@@ -58,7 +58,7 @@ const PlaceOrderPage = () => {
     IOrder
   >(createOrder, {
     onSuccess: (response) => {
-      // dispatch(clearCartItems());
+      dispatch(clearCartItems());
       navigate(`/order/${response.data._id}`);
     },
     onError: (error) => {
