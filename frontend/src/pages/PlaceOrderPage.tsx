@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearCartItems } from "../slices/cartSlice";
 
 // APIs
-import { createOrder } from "../modules/api";
+import { postOrder } from "../modules/api";
 
 // functions
 import { numberWithCommas } from "../utils/numberWithCommas";
@@ -56,7 +56,7 @@ const PlaceOrderPage = () => {
     ICreateOrderResponse,
     ApiError,
     IOrder
-  >(createOrder, {
+  >(postOrder, {
     onSuccess: (response) => {
       dispatch(clearCartItems());
       navigate(`/order/${response.data._id}`);

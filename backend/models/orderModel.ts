@@ -63,7 +63,7 @@ const orderSchema = new Schema<IOrder>(
       default: false,
     },
     paidAt: {
-      type: Number,
+      type: String,
     },
     isDelivered: {
       type: Boolean,
@@ -71,7 +71,7 @@ const orderSchema = new Schema<IOrder>(
       default: false,
     },
     deliveredAt: {
-      type: Number,
+      type: String,
     },
   },
   {

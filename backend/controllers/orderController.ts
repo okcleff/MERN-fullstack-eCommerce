@@ -46,7 +46,7 @@ const addOrderItems = asyncHandler(async (req: IUserRequest, res) => {
 // @access  Private
 const getMyOrders = asyncHandler(async (req: IUserRequest, res) => {
   const orders = await Order.find({ user: req.user._id });
-  res.json(orders);
+  res.status(200).json(orders);
 });
 
 // @desc    Get order by ID
@@ -72,11 +72,9 @@ const getOrderById = asyncHandler(async (req, res) => {
 const updateOrderToPaid = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id);
 
-  console.log(req.body);
-
   if (order) {
     order.isPaid = true;
-    order.paidAt = Date.now();
+    order.paidAt = new Date().toLocaleString();
     order.paymentResult = {
       id: req.body.id,
       status: req.body.status,
@@ -101,7 +99,7 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
 
   if (order) {
     order.isDelivered = true;
-    order.deliveredAt = Date.now();
+    order.deliveredAt = new Date().toLocaleString();
 
     const updatedOrder = await order.save();
 

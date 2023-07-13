@@ -62,6 +62,15 @@ export interface IOrder {
   totalPrice: number;
 }
 
+export interface IMyOrder extends IOrder {
+  _id: string;
+  createdAt: string;
+  paidAt: string;
+  deliveredAt: string;
+  isPaid: boolean;
+  isDelivered: boolean;
+}
+
 export interface ApiError {
   response: {
     data: {

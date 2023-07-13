@@ -42,7 +42,7 @@ const postLogout = async () => {
   return response;
 };
 
-const createOrder = async (body: IOrder) => {
+const postOrder = async (body: IOrder) => {
   const response = await instance.post(`${ORDERS_URL}`, body);
   return response;
 };
@@ -75,15 +75,32 @@ const getPaypalClientId = async () => {
   return response;
 };
 
+const putProfile = async (body: {
+  _id: string;
+  name?: string;
+  email?: string;
+  password: string;
+}) => {
+  const response = await instance.put(`${USERS_URL}/profile`, body);
+  return response;
+};
+
+const getMyOrders = async () => {
+  const response = await instance.get(`${ORDERS_URL}/myorders`);
+  return response;
+};
+
 export {
   getProducts,
   getProductDetails,
   postSignup,
   postLogin,
   postLogout,
-  createOrder,
+  postOrder,
   getOrderDetails,
   putOrderToPaid,
   putOrderDelivery,
   getPaypalClientId,
+  putProfile,
+  getMyOrders,
 };
