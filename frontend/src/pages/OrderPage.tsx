@@ -73,23 +73,6 @@ const OrderPage = () => {
     getOrderDetails(orderId as string)
   );
 
-  const {
-    _id,
-    orderItems,
-    shippingAddress,
-    paymentMethod,
-    itemsPrice,
-    shippingPrice,
-    taxPrice,
-    totalPrice,
-    paidAt,
-    deliveredAt,
-    isPaid,
-    isDelivered,
-    user,
-  } = order!.data;
-  const { address, city, postalCode, country } = shippingAddress;
-
   const { mutate: payOrder, isLoading: loadingPay } = useMutation<
     IPaidOrderResponse,
     ApiError,
@@ -106,7 +89,11 @@ const OrderPage = () => {
 
   const { mutate: deliverOrder, isLoading: loadingDeliver } = useMutation(
     putOrderDelivery,
-    { onSuccess: () => refetch() }
+    {
+      onSuccess: () => {
+        refetch();
+      },
+    }
   );
 
   const {
@@ -133,7 +120,7 @@ const OrderPage = () => {
         });
       };
 
-      if (order && !isPaid) {
+      if (order && !order.data.isPaid) {
         if (!window.paypal) {
           loadPaypalScript();
         }
@@ -141,7 +128,6 @@ const OrderPage = () => {
     }
   }, [
     errorPaypal,
-    isPaid,
     loadingPaypal,
     order,
     paypal?.data.clientId,
@@ -182,25 +168,32 @@ const OrderPage = () => {
     <Message variant="danger">{error.response.data.message}</Message>
   ) : (
     <>
-      <h1>Order {_id}</h1>
+      <h1>Order {order.data._id}</h1>
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">
             <ListGroup.Item>
               <h2>Shipping</h2>
               <p>
-                <strong>Name: </strong> {user.name}
+                <strong>Name: </strong> {order.data.user.name}
               </p>
               <p>
                 <strong>Email: </strong>{" "}
-                <a href={`mailto:${user.email}`}>{user.email}</a>
+                <a href={`mailto:${order.data.user.email}`}>
+                  {order.data.user.email}
+                </a>
               </p>
               <p>
                 <strong>Address:</strong>
-                {address + " " + city + ", " + postalCode + ", " + country}
+                {order.data.shippingAddress.address},{" "}
+                {order.data.shippingAddress.city}{" "}
+                {order.data.shippingAddress.postalCode},{" "}
+                {order.data.shippingAddress.country}
               </p>
-              {isDelivered ? (
-                <Message variant="success">Delivered on {deliveredAt}</Message>
+              {order.data.isDelivered ? (
+                <Message variant="success">
+                  Delivered on {order.data.deliveredAt}
+                </Message>
               ) : (
                 <Message variant="danger">Not Delivered</Message>
               )}
@@ -210,10 +203,10 @@ const OrderPage = () => {
               <h2>Payment Method</h2>
               <p>
                 <strong>Method: </strong>
-                {paymentMethod}
+                {order.data.paymentMethod}
               </p>
-              {isPaid ? (
-                <Message variant="success">Paid on {paidAt}</Message>
+              {order.data.isPaid ? (
+                <Message variant="success">Paid on {order.data.paidAt}</Message>
               ) : (
                 <Message variant="danger">Not Paid</Message>
               )}
@@ -221,11 +214,11 @@ const OrderPage = () => {
 
             <ListGroup.Item>
               <h2>Order Items</h2>
-              {orderItems.length === 0 ? (
+              {order.data.orderItems.length === 0 ? (
                 <Message>Order is empty</Message>
               ) : (
                 <ListGroup variant="flush">
-                  {orderItems.map((item, index) => (
+                  {order.data.orderItems.map((item, index) => (
                     <ListGroup.Item key={index}>
                       <Row>
                         <Col md={1}>
@@ -266,32 +259,32 @@ const OrderPage = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
-                  <Col>₩{numberWithCommas(itemsPrice)}</Col>
+                  <Col>₩{numberWithCommas(order.data.itemsPrice)}</Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
                   <Col>Shipping</Col>
-                  <Col>₩{numberWithCommas(shippingPrice)}</Col>
+                  <Col>₩{numberWithCommas(order.data.shippingPrice)}</Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
                   <Col>Tax</Col>
-                  <Col>₩{numberWithCommas(taxPrice)}</Col>
+                  <Col>₩{numberWithCommas(order.data.taxPrice)}</Col>
                 </Row>
               </ListGroup.Item>
 
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>₩{numberWithCommas(totalPrice)}</Col>
+                  <Col>₩{numberWithCommas(order.data.totalPrice)}</Col>
                 </Row>
               </ListGroup.Item>
 
-              {!isPaid && (
+              {!order.data.isPaid && (
                 <ListGroup.Item>
                   {loadingPay && <Loader />}
 
@@ -309,17 +302,20 @@ const OrderPage = () => {
 
               {loadingDeliver && <Loader />}
 
-              {userInfo && userInfo.isAdmin && isPaid && !isDelivered && (
-                <ListGroup.Item>
-                  <Button
-                    type="button"
-                    className="btn btn-block"
-                    onClick={deliverHandler}
-                  >
-                    Mark As Delivered
-                  </Button>
-                </ListGroup.Item>
-              )}
+              {userInfo &&
+                userInfo.isAdmin &&
+                order.data.isPaid &&
+                !order.data.isDelivered && (
+                  <ListGroup.Item>
+                    <Button
+                      type="button"
+                      className="btn btn-block"
+                      onClick={deliverHandler}
+                    >
+                      Mark As Delivered
+                    </Button>
+                  </ListGroup.Item>
+                )}
             </ListGroup>
           </Card>
         </Col>
