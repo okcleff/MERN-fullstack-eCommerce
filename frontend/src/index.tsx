@@ -23,6 +23,7 @@ import PaymentPage from './pages/PaymentPage';
 import PlaceOrderPage from './pages/PlaceOrderPage';
 import OrderPage from './pages/OrderPage';
 import ProfilePage from './pages/ProfilePage';
+import OrderListPage from './pages/admin/OrderListPaget';
 
 import './assets/styles/bootstrap.custom.css';
 import './assets/styles/index.css';
@@ -45,7 +46,9 @@ const router = createBrowserRouter(
       </Route>
 
       {/* Admin users */}
-      <Route path='' element={<AdminRoute />}></Route>
+      <Route path='' element={<AdminRoute />}>
+        <Route path='/admin/orderlist' element={<OrderListPage />} />
+      </Route>
     </Route>
   )
 );
