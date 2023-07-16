@@ -23,7 +23,7 @@ import PaymentPage from './pages/PaymentPage';
 import PlaceOrderPage from './pages/PlaceOrderPage';
 import OrderPage from './pages/OrderPage';
 import ProfilePage from './pages/ProfilePage';
-import OrderListPage from './pages/admin/OrderListPaget';
+import OrderListPage from './pages/admin/OrderListPage';
 
 import './assets/styles/bootstrap.custom.css';
 import './assets/styles/index.css';
