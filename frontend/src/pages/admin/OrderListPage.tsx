@@ -1,20 +1,23 @@
 // lib
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from "@tanstack/react-query";
 
 // components
-import { LinkContainer } from 'react-router-bootstrap';
-import { Table, Button } from 'react-bootstrap';
-import Message from '../../components/Message';
-import Loader from '../../components/Loader';
+import { LinkContainer } from "react-router-bootstrap";
+import { Table, Button } from "react-bootstrap";
+import Message from "../../components/Message";
+import Loader from "../../components/Loader";
 
 // APIs
-import { getAllOrders } from '../../modules/api';
+import { getAllOrders } from "../../modules/api";
+
+// functions
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 // assets
-import { FaTimes } from 'react-icons/fa';
+import { FaTimes } from "react-icons/fa";
 
 // types
-import { ICartItem, ApiError } from '../../types';
+import { ICartItem, ApiError } from "../../types";
 
 interface IOrderResponse {
   data: {
@@ -51,18 +54,18 @@ const OrderListPage = () => {
     data: orders,
     isLoading,
     error,
-  } = useQuery<IOrderResponse, ApiError>(['allOrders'], getAllOrders);
+  } = useQuery<IOrderResponse, ApiError>(["allOrders"], getAllOrders);
 
   if (isLoading) return <Loader />;
 
   if (error)
-    return <Message variant='danger'>{error.response.data.message}</Message>;
+    return <Message variant="danger">{error.response.data.message}</Message>;
 
   return (
     <>
       <h1>Orders</h1>
 
-      <Table striped bordered hover responsive className='table-sm'>
+      <Table striped bordered hover responsive className="table-sm">
         <thead>
           <tr>
             <th>ID</th>
@@ -80,24 +83,24 @@ const OrderListPage = () => {
               <td>{order._id}</td>
               <td>{order.user && order.user.name}</td>
               <td>{order.createdAt.substring(0, 10)}</td>
-              <td>${order.totalPrice}</td>
+              <td>₩ {numberWithCommas(order.totalPrice)}</td>
               <td>
                 {order.isPaid ? (
                   order.paidAt.substring(0, 10)
                 ) : (
-                  <FaTimes style={{ color: 'red' }} />
+                  <FaTimes style={{ color: "red" }} />
                 )}
               </td>
               <td>
                 {order.isDelivered ? (
                   order.deliveredAt.substring(0, 10)
                 ) : (
-                  <FaTimes style={{ color: 'red' }} />
+                  <FaTimes style={{ color: "red" }} />
                 )}
               </td>
               <td>
                 <LinkContainer to={`/order/${order._id}`}>
-                  <Button variant='light' className='btn-sm'>
+                  <Button variant="light" className="btn-sm">
                     Details
                   </Button>
                 </LinkContainer>

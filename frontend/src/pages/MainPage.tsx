@@ -11,19 +11,11 @@ import Message from "../components/Message";
 import { getProducts } from "../modules/api";
 
 // types
-import { IProduct } from "../types";
+import { IProduct, ApiError } from "../types";
 
 interface ProductData {
   data: {
     products: IProduct[];
-  };
-}
-
-interface ApiError {
-  response: {
-    data: {
-      message: string;
-    };
   };
 }
 
