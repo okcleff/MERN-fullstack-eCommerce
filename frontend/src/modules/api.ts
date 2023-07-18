@@ -100,19 +100,17 @@ const postNewProduct = async () => {
   return response;
 };
 
-const putProduct = async (
-  id: string,
-  body: {
-    name: string;
-    price: number;
-    description: string;
-    image: string;
-    brand: string;
-    category: string;
-    countInStock: number;
-  }
-) => {
-  const response = await instance.put(`${PRODUCTS_URL}/${id}`, body);
+const putProduct = async (body: {
+  id: string;
+  name: string;
+  price: number;
+  description: string;
+  image: string;
+  brand: string;
+  category: string;
+  countInStock: number;
+}) => {
+  const response = await instance.put(`${PRODUCTS_URL}/${body.id}`, body);
   return response;
 };
 

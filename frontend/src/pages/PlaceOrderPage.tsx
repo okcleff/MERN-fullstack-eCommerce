@@ -74,7 +74,7 @@ const PlaceOrderPage = () => {
     }
   }, [paymentMethod, navigate, address, city, postalCode, country]);
 
-  const placeOrderHandler = async () => {
+  const placeOrderHandler = () => {
     mutate({
       orderItems: cartItems,
       shippingAddress,

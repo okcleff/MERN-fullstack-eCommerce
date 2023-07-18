@@ -82,7 +82,7 @@ const OrderPage = () => {
       refetch();
       toast.success("Order is paid");
     },
-    onError: (error: { response: { data: { message: string } } }) => {
+    onError: (error) => {
       toast.error(error.response.data.message);
     },
   });
@@ -160,7 +160,7 @@ const OrderPage = () => {
       });
   }
 
-  const deliverHandler = async () => {
+  const deliverHandler = () => {
     deliverOrder(orderId as string);
   };
 

@@ -29,20 +29,11 @@ import { numberWithCommas } from "../utils/numberWithCommas";
 import { getProductDetails } from "../modules/api";
 
 // types
-import { IProduct } from "../types";
+import { IProduct, ApiError } from "../types";
 
 interface ProductData {
   data: IProduct;
 }
-
-interface ApiError {
-  response: {
-    data: {
-      message: string;
-    };
-  };
-}
-
 const ProductDetailPage = () => {
   const { productId } = useParams();
 
