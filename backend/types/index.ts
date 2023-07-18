@@ -34,6 +34,7 @@ export interface IUser {
 export interface IUserRequest extends Request {
   user: {
     _id: string;
+    name: string;
   };
 }
 
