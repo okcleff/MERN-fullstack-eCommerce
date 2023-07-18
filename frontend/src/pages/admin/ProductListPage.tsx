@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 
 // lib
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
 // components
@@ -18,7 +18,7 @@ import { numberWithCommas } from "../../utils/numberWithCommas";
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 
 // APIs
-import { getProducts } from "../../modules/api";
+import { getProducts, postNewProduct } from "../../modules/api";
 
 // types
 import { IProduct, ApiError } from "../../types";
@@ -39,11 +39,29 @@ const ProductListPage = () => {
     getProducts
   );
 
+  const { mutate: createProduct, isLoading: loadingCreate } = useMutation(
+    postNewProduct,
+    {
+      onSuccess: () => {
+        refetch();
+      },
+      onError: (error: ApiError) => {
+        toast.error(error.response.data.message);
+      },
+    }
+  );
+
   if (isLoading) return <Loader />;
 
   if (error) {
     return <Message variant="danger">{error.response.data.message}</Message>;
   }
+
+  const createProductHandler = () => {
+    if (window.confirm("Are you sure you want to create a new product?")) {
+      createProduct();
+    }
+  };
 
   return (
     <>
@@ -52,10 +70,7 @@ const ProductListPage = () => {
           <h1>Products</h1>
         </Col>
         <Col className="text-end">
-          <Button
-            className="my-3"
-            //  onClick={createProductHandler}
-          >
+          <Button className="my-3" onClick={createProductHandler}>
             <FaPlus /> Create Product
           </Button>
         </Col>
