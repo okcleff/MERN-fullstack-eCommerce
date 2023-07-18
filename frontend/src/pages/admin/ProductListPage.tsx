@@ -18,7 +18,7 @@ import { numberWithCommas } from "../../utils/numberWithCommas";
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 
 // APIs
-import { getProducts, postNewProduct } from "../../modules/api";
+import { getProducts, postNewProduct, deleteProduct } from "../../modules/api";
 
 // types
 import { IProduct, ApiError } from "../../types";
@@ -39,17 +39,29 @@ const ProductListPage = () => {
     getProducts
   );
 
-  const { mutate: createProduct, isLoading: loadingCreate } = useMutation(
-    postNewProduct,
-    {
+  const { mutate: createProductMutation, isLoading: loadingCreate } =
+    useMutation(postNewProduct, {
       onSuccess: () => {
         refetch();
       },
       onError: (error: ApiError) => {
         toast.error(error.response.data.message);
       },
+    });
+
+  const { mutate: deleteProductMutation, isLoading: loadingDelete } =
+    useMutation(deleteProduct, {
+      onSuccess: () => refetch(),
+      onError: (error: ApiError) => {
+        toast.error(error.response.data.message);
+      },
+    });
+
+  const deleteHandler = (id: string) => {
+    if (window.confirm("Are you sure")) {
+      deleteProductMutation(id);
     }
-  );
+  };
 
   if (isLoading) return <Loader />;
 
@@ -59,7 +71,7 @@ const ProductListPage = () => {
 
   const createProductHandler = () => {
     if (window.confirm("Are you sure you want to create a new product?")) {
-      createProduct();
+      createProductMutation();
     }
   };
 
@@ -69,12 +81,17 @@ const ProductListPage = () => {
         <Col>
           <h1>Products</h1>
         </Col>
+
         <Col className="text-end">
           <Button className="my-3" onClick={createProductHandler}>
             <FaPlus /> Create Product
           </Button>
         </Col>
       </Row>
+
+      {loadingCreate && <Loader />}
+
+      {loadingDelete && <Loader />}
 
       <>
         <Table striped bordered hover responsive className="table-sm">
@@ -103,10 +120,11 @@ const ProductListPage = () => {
                       <FaEdit />
                     </Button>
                   </LinkContainer>
+
                   <Button
                     variant="danger"
                     className="btn-sm"
-                    // onClick={() => deleteHandler(product._id)}
+                    onClick={() => deleteHandler(product._id)}
                   >
                     <FaTrash style={{ color: "white" }} />
                   </Button>

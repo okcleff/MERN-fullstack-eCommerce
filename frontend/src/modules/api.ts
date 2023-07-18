@@ -100,6 +100,27 @@ const postNewProduct = async () => {
   return response;
 };
 
+const putProduct = async (
+  id: string,
+  body: {
+    name: string;
+    price: number;
+    description: string;
+    image: string;
+    brand: string;
+    category: string;
+    countInStock: number;
+  }
+) => {
+  const response = await instance.put(`${PRODUCTS_URL}/${id}`, body);
+  return response;
+};
+
+const deleteProduct = async (id: string) => {
+  const response = await instance.delete(`${PRODUCTS_URL}/${id}`);
+  return response;
+};
+
 export {
   getProducts,
   getProductDetails,
@@ -115,4 +136,6 @@ export {
   getMyOrders,
   getAllOrders,
   postNewProduct,
+  putProduct,
+  deleteProduct,
 };
