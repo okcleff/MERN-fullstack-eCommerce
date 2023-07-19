@@ -104,7 +104,7 @@ const ProductEditPage = () => {
     }
   );
 
-  const uploadFileHandler = async (e: any) => {
+  const uploadFileHandler = (e: any) => {
     const formData = new FormData();
     formData.append("image", e.target.files[0]);
 
@@ -172,7 +172,6 @@ const ProductEditPage = () => {
               onChange={(e) => setImage(e.target.value)}
             ></Form.Control>
             <Form.Control
-              // label="Choose File"
               onChange={uploadFileHandler}
               type="file"
             ></Form.Control>

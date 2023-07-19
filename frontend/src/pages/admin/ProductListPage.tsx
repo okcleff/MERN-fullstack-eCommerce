@@ -58,7 +58,7 @@ const ProductListPage = () => {
     });
 
   const deleteHandler = (id: string) => {
-    if (window.confirm("Are you sure")) {
+    if (window.confirm("제품을 삭제하시겠습니까?")) {
       deleteProductMutation(id);
     }
   };
@@ -70,7 +70,7 @@ const ProductListPage = () => {
   }
 
   const createProductHandler = () => {
-    if (window.confirm("Are you sure you want to create a new product?")) {
+    if (window.confirm("새로운 제품을 등록하시겠습니까?")) {
       createProductMutation();
     }
   };

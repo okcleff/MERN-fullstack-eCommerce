@@ -14,6 +14,8 @@ export const instance = axios.create({
   baseURL: BASE_URL,
 });
 
+//---------- product api
+
 const getProducts = async () => {
   const response = await instance.get(`${PRODUCTS_URL}`);
   return response;
@@ -24,6 +26,31 @@ const getProductDetails = async (productId: string) => {
   return response;
 };
 
+const putProduct = async (body: {
+  id: string;
+  name: string;
+  price: number;
+  description: string;
+  image: string;
+  brand: string;
+  category: string;
+  countInStock: number;
+}) => {
+  const response = await instance.put(`${PRODUCTS_URL}/${body.id}`, body);
+  return response;
+};
+
+const deleteProduct = async (id: string) => {
+  const response = await instance.delete(`${PRODUCTS_URL}/${id}`);
+  return response;
+};
+
+const postNewProduct = async () => {
+  const response = await instance.post(`${PRODUCTS_URL}`);
+  return response;
+};
+
+//---------- user api
 const postSignup = async (body: {
   name: string;
   email: string;
@@ -42,6 +69,28 @@ const postLogout = async () => {
   const response = await instance.post(`${USERS_URL}/logout`);
   return response;
 };
+
+const putProfile = async (body: {
+  _id: string;
+  name?: string;
+  email?: string;
+  password: string;
+}) => {
+  const response = await instance.put(`${USERS_URL}/profile`, body);
+  return response;
+};
+
+const getAllUsers = async () => {
+  const response = await instance.get(`${USERS_URL}`);
+  return response;
+};
+
+const deleteUser = async (id: string) => {
+  const response = await instance.delete(`${USERS_URL}/${id}`);
+  return response;
+};
+
+//---------- order api
 
 const postOrder = async (body: IOrder) => {
   const response = await instance.post(`${ORDERS_URL}`, body);
@@ -71,21 +120,6 @@ const putOrderDelivery = async (id: string) => {
   return response;
 };
 
-const getPaypalClientId = async () => {
-  const response = await instance.get(`${PAYPAL_URL}`);
-  return response;
-};
-
-const putProfile = async (body: {
-  _id: string;
-  name?: string;
-  email?: string;
-  password: string;
-}) => {
-  const response = await instance.put(`${USERS_URL}/profile`, body);
-  return response;
-};
-
 const getMyOrders = async () => {
   const response = await instance.get(`${ORDERS_URL}/myorders`);
   return response;
@@ -96,29 +130,14 @@ const getAllOrders = async () => {
   return response;
 };
 
-const postNewProduct = async () => {
-  const response = await instance.post(`${PRODUCTS_URL}`);
+//---------- paypal api
+
+const getPaypalClientId = async () => {
+  const response = await instance.get(`${PAYPAL_URL}`);
   return response;
 };
 
-const putProduct = async (body: {
-  id: string;
-  name: string;
-  price: number;
-  description: string;
-  image: string;
-  brand: string;
-  category: string;
-  countInStock: number;
-}) => {
-  const response = await instance.put(`${PRODUCTS_URL}/${body.id}`, body);
-  return response;
-};
-
-const deleteProduct = async (id: string) => {
-  const response = await instance.delete(`${PRODUCTS_URL}/${id}`);
-  return response;
-};
+//---------- upload api
 
 const uploadProductImage = async (body: FormData) => {
   const response = await instance.post(`${UPLOAD_URL}`, body);
@@ -143,4 +162,6 @@ export {
   putProduct,
   deleteProduct,
   uploadProductImage,
+  getAllUsers,
+  deleteUser,
 };
