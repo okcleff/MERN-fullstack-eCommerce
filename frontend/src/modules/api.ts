@@ -50,6 +50,13 @@ const postNewProduct = async () => {
   return response;
 };
 
+//---------- upload api
+
+const uploadProductImage = async (body: FormData) => {
+  const response = await instance.post(`${UPLOAD_URL}`, body);
+  return response;
+};
+
 //---------- user api
 const postSignup = async (body: {
   name: string;
@@ -85,8 +92,23 @@ const getAllUsers = async () => {
   return response;
 };
 
+const getUserById = async (id: string) => {
+  const response = await instance.get(`${USERS_URL}/${id}`);
+  return response;
+};
+
 const deleteUser = async (id: string) => {
   const response = await instance.delete(`${USERS_URL}/${id}`);
+  return response;
+};
+
+const updateUser = async (body: {
+  id: string;
+  name: string;
+  email: string;
+  isAdmin: boolean;
+}) => {
+  const response = await instance.put(`${USERS_URL}/${body.id}`, body);
   return response;
 };
 
@@ -137,31 +159,26 @@ const getPaypalClientId = async () => {
   return response;
 };
 
-//---------- upload api
-
-const uploadProductImage = async (body: FormData) => {
-  const response = await instance.post(`${UPLOAD_URL}`, body);
-  return response;
-};
-
 export {
   getProducts,
   getProductDetails,
-  postSignup,
-  postLogin,
-  postLogout,
-  postOrder,
-  getOrderDetails,
-  putOrderToPaid,
-  putOrderDelivery,
-  getPaypalClientId,
-  putProfile,
-  getMyOrders,
-  getAllOrders,
   postNewProduct,
   putProduct,
   deleteProduct,
   uploadProductImage,
+  postSignup,
+  postLogin,
+  postLogout,
+  putProfile,
   getAllUsers,
+  getUserById,
   deleteUser,
+  updateUser,
+  postOrder,
+  getOrderDetails,
+  putOrderToPaid,
+  putOrderDelivery,
+  getMyOrders,
+  getAllOrders,
+  getPaypalClientId,
 };
