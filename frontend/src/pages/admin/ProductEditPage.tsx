@@ -12,7 +12,11 @@ import Loader from "../../components/Loader";
 import FormContainer from "../../components/FormContainer";
 
 // APIs
-import { getProductDetails, putProduct } from "../../modules/api";
+import {
+  getProductDetails,
+  putProduct,
+  uploadProductImage,
+} from "../../modules/api";
 
 // types
 import { IProduct, ApiError } from "../../types";
@@ -87,6 +91,26 @@ const ProductEditPage = () => {
     });
   };
 
+  const { mutate: uploadImage, isLoading: loadingUpload } = useMutation(
+    uploadProductImage,
+    {
+      onSuccess: (res) => {
+        toast.success(res.data.message);
+        setImage(res.data.image);
+      },
+      onError: (error: ApiError) => {
+        toast.error(error.response.data.message);
+      },
+    }
+  );
+
+  const uploadFileHandler = async (e: any) => {
+    const formData = new FormData();
+    formData.append("image", e.target.files[0]);
+
+    uploadImage(formData);
+  };
+
   useEffect(() => {
     if (product) {
       const { name, price, image, brand, category, countInStock, description } =
@@ -139,7 +163,7 @@ const ProductEditPage = () => {
             ></Form.Control>
           </Form.Group>
 
-          {/* <Form.Group controlId="image">
+          <Form.Group controlId="image">
             <Form.Label>Image</Form.Label>
             <Form.Control
               type="text"
@@ -148,12 +172,12 @@ const ProductEditPage = () => {
               onChange={(e) => setImage(e.target.value)}
             ></Form.Control>
             <Form.Control
-              label="Choose File"
+              // label="Choose File"
               onChange={uploadFileHandler}
               type="file"
             ></Form.Control>
             {loadingUpload && <Loader />}
-          </Form.Group> */}
+          </Form.Group>
 
           <Form.Group controlId="brand">
             <Form.Label>Brand</Form.Label>
