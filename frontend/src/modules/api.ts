@@ -16,8 +16,10 @@ export const instance = axios.create({
 
 //---------- product api
 
-const getProducts = async (pageNumber: string) => {
-  const response = await instance.get(`${PRODUCTS_URL}?page=${pageNumber}`);
+const getProducts = async (keyword: string, pageNumber: string) => {
+  const response = await instance.get(
+    `${PRODUCTS_URL}?page=${pageNumber}&keyword=${keyword}`
+  );
   return response;
 };
 

@@ -28,8 +28,8 @@ const MainPage = () => {
   const { pageNumber, keyword } = useParams();
 
   const { data, error, isLoading } = useQuery<ProductData, ApiError>(
-    ["product", pageNumber],
-    () => getProducts(pageNumber || "1"),
+    ["product", pageNumber, keyword],
+    () => getProducts(keyword || "", pageNumber || "1"),
     {
       keepPreviousData: true,
     }

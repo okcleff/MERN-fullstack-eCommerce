@@ -32,11 +32,11 @@ interface ProductData {
 }
 
 const ProductListPage = () => {
-  const { pageNumber } = useParams();
+  const { keyword, pageNumber } = useParams();
 
   const { data, error, isLoading, refetch } = useQuery<ProductData, ApiError>(
-    ["product", pageNumber],
-    () => getProducts(pageNumber || "1")
+    ["product", pageNumber, keyword],
+    () => getProducts(keyword || "", pageNumber || "1")
   );
 
   const { mutate: createProductMutation, isLoading: loadingCreate } =
@@ -79,12 +79,12 @@ const ProductListPage = () => {
     <>
       <Row className="align-items-center">
         <Col>
-          <h1>Products</h1>
+          <h1>제품 목록</h1>
         </Col>
 
         <Col className="text-end">
           <Button className="my-3" onClick={createProductHandler}>
-            <FaPlus /> Create Product
+            <FaPlus /> 새 제품 추가하기
           </Button>
         </Col>
       </Row>
@@ -98,10 +98,10 @@ const ProductListPage = () => {
           <thead>
             <tr>
               <th>ID</th>
-              <th>NAME</th>
-              <th>PRICE</th>
-              <th>CATEGORY</th>
-              <th>BRAND</th>
+              <th>품명</th>
+              <th>가격</th>
+              <th>분류</th>
+              <th>브랜드</th>
               <th></th>
             </tr>
           </thead>
