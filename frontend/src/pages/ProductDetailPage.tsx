@@ -63,6 +63,8 @@ const ProductDetailPage = () => {
       onSuccess: () => {
         toast.success("Review created successfully");
         refetch();
+        setRating(0);
+        setComment("");
       },
       onError: (error: ApiError) => {
         toast.error(error.response.data.message);
@@ -105,7 +107,7 @@ const ProductDetailPage = () => {
   return (
     <>
       <Link className="btn btn-light my-3" to="/">
-        Go Back
+        뒤로가기
       </Link>
 
       <Row>
@@ -123,7 +125,7 @@ const ProductDetailPage = () => {
               <Rating value={productRating} text={`${numReviews} reviews`} />
             </ListGroup.Item>
 
-            <ListGroup.Item>Price: ₩{numberWithCommas(price)}</ListGroup.Item>
+            <ListGroup.Item>가격: ₩{numberWithCommas(price)}</ListGroup.Item>
 
             <ListGroup.Item>{description}</ListGroup.Item>
           </ListGroup>
@@ -134,7 +136,7 @@ const ProductDetailPage = () => {
             <ListGroup variant="flush">
               <ListGroup.Item>
                 <Row>
-                  <Col>Price:</Col>
+                  <Col>가격:</Col>
                   <Col>
                     <strong>₩{numberWithCommas(price)}</strong>
                   </Col>
@@ -143,15 +145,15 @@ const ProductDetailPage = () => {
 
               <ListGroup.Item>
                 <Row>
-                  <Col>Status:</Col>
-                  <Col>{countInStock > 0 ? "In Stock" : "Out Of Stock"}</Col>
+                  <Col>재고 여부:</Col>
+                  <Col>{countInStock > 0 ? "재고 있음" : "재고 없음"}</Col>
                 </Row>
               </ListGroup.Item>
 
               {countInStock > 0 && (
                 <ListGroup.Item>
                   <Row>
-                    <Col>Qty</Col>
+                    <Col>수량</Col>
                     <Col>
                       <Form.Control
                         as="select"
@@ -176,7 +178,7 @@ const ProductDetailPage = () => {
                   disabled={countInStock === 0}
                   onClick={addToCartHandler}
                 >
-                  Add To Cart
+                  장바구니에 담기
                 </Button>
               </ListGroup.Item>
             </ListGroup>
@@ -186,9 +188,9 @@ const ProductDetailPage = () => {
 
       <Row className="review">
         <Col md={6}>
-          <h2>Reviews</h2>
+          <h2>리뷰</h2>
 
-          {reviews.length === 0 && <Message>No Reviews</Message>}
+          {reviews.length === 0 && <Message>리뷰가 존재하지 않습니다.</Message>}
 
           <ListGroup variant="flush">
             {reviews.map((review) => (
@@ -204,21 +206,21 @@ const ProductDetailPage = () => {
             ))}
 
             <ListGroup.Item>
-              <h2>Write a Customer Review</h2>
+              <h2>리뷰를 남겨주세요</h2>
 
               {loadingProductReview && <Loader />}
 
               {userInfo ? (
                 <Form onSubmit={submitHandler}>
                   <Form.Group className="my-2" controlId="rating">
-                    <Form.Label>Rating</Form.Label>
+                    <Form.Label>평점</Form.Label>
                     <Form.Control
                       as="select"
                       required
                       value={rating}
                       onChange={(e) => setRating(Number(e.target.value))}
                     >
-                      <option value="">Select...</option>
+                      <option value="">선택하기</option>
                       <option value="1">1 - Poor</option>
                       <option value="2">2 - Fair</option>
                       <option value="3">3 - Good</option>
@@ -228,7 +230,7 @@ const ProductDetailPage = () => {
                   </Form.Group>
 
                   <Form.Group className="my-2" controlId="comment">
-                    <Form.Label>Comment</Form.Label>
+                    <Form.Label>코멘트</Form.Label>
                     <Form.Control
                       as="textarea"
                       rows={3}
@@ -243,12 +245,12 @@ const ProductDetailPage = () => {
                     type="submit"
                     variant="primary"
                   >
-                    Submit
+                    작성하기
                   </Button>
                 </Form>
               ) : (
                 <Message>
-                  Please <Link to="/login">sign in</Link> to write a review
+                  먼저 <Link to="/login">로그인</Link> 해주세요.
                 </Message>
               )}
             </ListGroup.Item>

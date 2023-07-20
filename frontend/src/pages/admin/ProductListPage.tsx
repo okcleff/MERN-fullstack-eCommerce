@@ -35,8 +35,8 @@ const ProductListPage = () => {
   const { pageNumber } = useParams();
 
   const { data, error, isLoading, refetch } = useQuery<ProductData, ApiError>(
-    ["product"],
-    getProducts
+    ["product", pageNumber],
+    () => getProducts(pageNumber || "1")
   );
 
   const { mutate: createProductMutation, isLoading: loadingCreate } =
@@ -57,12 +57,6 @@ const ProductListPage = () => {
       },
     });
 
-  const deleteHandler = (id: string) => {
-    if (window.confirm("제품을 삭제하시겠습니까?")) {
-      deleteProductMutation(id);
-    }
-  };
-
   if (isLoading) return <Loader />;
 
   if (error) {
@@ -72,6 +66,12 @@ const ProductListPage = () => {
   const createProductHandler = () => {
     if (window.confirm("새로운 제품을 등록하시겠습니까?")) {
       createProductMutation();
+    }
+  };
+
+  const deleteHandler = (id: string) => {
+    if (window.confirm("제품을 삭제하시겠습니까?")) {
+      deleteProductMutation(id);
     }
   };
 

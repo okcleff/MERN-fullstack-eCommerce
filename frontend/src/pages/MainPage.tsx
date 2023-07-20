@@ -1,3 +1,5 @@
+import { useParams } from "react-router-dom";
+
 // lib
 import { useQuery } from "@tanstack/react-query";
 
@@ -6,6 +8,7 @@ import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import Paginate from "../components/Paginate";
 
 // APIs
 import { getProducts } from "../modules/api";
@@ -16,13 +19,20 @@ import { IProduct, ApiError } from "../types";
 interface ProductData {
   data: {
     products: IProduct[];
+    pages: number;
+    page: number;
   };
 }
 
 const MainPage = () => {
+  const { pageNumber, keyword } = useParams();
+
   const { data, error, isLoading } = useQuery<ProductData, ApiError>(
-    ["product"],
-    getProducts
+    ["product", pageNumber],
+    () => getProducts(pageNumber || "1"),
+    {
+      keepPreviousData: true,
+    }
   );
 
   if (isLoading) return <Loader />;
@@ -42,6 +52,12 @@ const MainPage = () => {
           </Col>
         ))}
       </Row>
+
+      <Paginate
+        pages={data.data.pages}
+        page={data.data.page}
+        keyword={keyword ? keyword : ""}
+      />
     </>
   );
 };
