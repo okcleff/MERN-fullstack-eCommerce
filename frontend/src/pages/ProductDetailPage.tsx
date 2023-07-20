@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 
 // lib
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 // components
 import {
@@ -19,17 +20,17 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 
 // redux
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../slices/cartSlice";
 
 // functions
 import { numberWithCommas } from "../utils/numberWithCommas";
 
 // APIs
-import { getProductDetails } from "../modules/api";
+import { getProductDetails, postNewProductReview } from "../modules/api";
 
 // types
-import { IProduct, ApiError } from "../types";
+import { IUserInfo, IProduct, ApiError } from "../types";
 
 interface ProductData {
   data: IProduct;
@@ -40,15 +41,33 @@ const ProductDetailPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { userInfo } = useSelector(
+    (state: { auth: { userInfo: IUserInfo } }) => state.auth
+  );
+
   const [qty, setQty] = useState(1);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
 
   const {
     data: product,
     error,
     isLoading,
+    refetch,
   } = useQuery<ProductData, ApiError>(["productDetail"], () =>
     getProductDetails(productId as string)
   );
+
+  const { mutate: newProductReviewMutate, isLoading: loadingProductReview } =
+    useMutation(postNewProductReview, {
+      onSuccess: () => {
+        toast.success("Review created successfully");
+        refetch();
+      },
+      onError: (error: ApiError) => {
+        toast.error(error.response.data.message);
+      },
+    });
 
   if (isLoading) return <Loader />;
 
@@ -56,12 +75,31 @@ const ProductDetailPage = () => {
     return <Message variant="danger">{error.response.data.message}</Message>;
   }
 
-  const { image, name, rating, numReviews, price, description, countInStock } =
-    product.data;
+  const {
+    image,
+    name,
+    rating: productRating,
+    reviews,
+    numReviews,
+    price,
+    description,
+    countInStock,
+  } = product.data;
 
   const addToCartHandler = () => {
     dispatch(addToCart({ ...product.data, qty }));
     navigate("/cart");
+  };
+
+  const submitHandler = async (e: any) => {
+    e.preventDefault();
+
+    newProductReviewMutate({
+      id: productId as string,
+      rating,
+      comment,
+    });
+    refetch();
   };
 
   return (
@@ -82,7 +120,7 @@ const ProductDetailPage = () => {
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <Rating value={rating} text={`${numReviews} reviews`} />
+              <Rating value={productRating} text={`${numReviews} reviews`} />
             </ListGroup.Item>
 
             <ListGroup.Item>Price: ₩{numberWithCommas(price)}</ListGroup.Item>
@@ -143,6 +181,78 @@ const ProductDetailPage = () => {
               </ListGroup.Item>
             </ListGroup>
           </Card>
+        </Col>
+      </Row>
+
+      <Row className="review">
+        <Col md={6}>
+          <h2>Reviews</h2>
+
+          {reviews.length === 0 && <Message>No Reviews</Message>}
+
+          <ListGroup variant="flush">
+            {reviews.map((review) => (
+              <ListGroup.Item key={review._id}>
+                <strong>{review.name}</strong>
+
+                <Rating value={review.rating} />
+
+                <p>{review.createdAt.substring(0, 10)}</p>
+
+                <p>{review.comment}</p>
+              </ListGroup.Item>
+            ))}
+
+            <ListGroup.Item>
+              <h2>Write a Customer Review</h2>
+
+              {loadingProductReview && <Loader />}
+
+              {userInfo ? (
+                <Form onSubmit={submitHandler}>
+                  <Form.Group className="my-2" controlId="rating">
+                    <Form.Label>Rating</Form.Label>
+                    <Form.Control
+                      as="select"
+                      required
+                      value={rating}
+                      onChange={(e) => setRating(Number(e.target.value))}
+                    >
+                      <option value="">Select...</option>
+                      <option value="1">1 - Poor</option>
+                      <option value="2">2 - Fair</option>
+                      <option value="3">3 - Good</option>
+                      <option value="4">4 - Very Good</option>
+                      <option value="5">5 - Excellent</option>
+                    </Form.Control>
+                  </Form.Group>
+
+                  <Form.Group className="my-2" controlId="comment">
+                    <Form.Label>Comment</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      required
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
+
+                  <Button
+                    disabled={loadingProductReview}
+                    type="submit"
+                    variant="primary"
+                  >
+                    Submit
+                  </Button>
+                </Form>
+              ) : (
+                <Message>
+                  Please <Link to="/login">sign in</Link> to write a review
+                </Message>
+              )}
+            </ListGroup.Item>
+          </ListGroup>
         </Col>
       </Row>
     </>

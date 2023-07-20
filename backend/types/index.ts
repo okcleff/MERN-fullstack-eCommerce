@@ -8,6 +8,11 @@ export interface IReview {
   user: Schema.Types.ObjectId;
 }
 
+export interface IProductReview extends IReview {
+  _id: string;
+  created_at: string;
+}
+
 export interface IProduct {
   user: Schema.Types.ObjectId;
   name: string;

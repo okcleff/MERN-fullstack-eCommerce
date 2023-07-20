@@ -50,6 +50,18 @@ const postNewProduct = async () => {
   return response;
 };
 
+const postNewProductReview = async (body: {
+  id: string;
+  rating: number;
+  comment: string;
+}) => {
+  const response = await instance.post(
+    `${PRODUCTS_URL}/${body.id}/reviews`,
+    body
+  );
+  return response;
+};
+
 //---------- upload api
 
 const uploadProductImage = async (body: FormData) => {
@@ -160,12 +172,15 @@ const getPaypalClientId = async () => {
 };
 
 export {
+  // product
   getProducts,
   getProductDetails,
   postNewProduct,
   putProduct,
   deleteProduct,
   uploadProductImage,
+  postNewProductReview,
+  // user
   postSignup,
   postLogin,
   postLogout,
@@ -174,11 +189,13 @@ export {
   getUserById,
   deleteUser,
   updateUser,
+  // order
   postOrder,
   getOrderDetails,
   putOrderToPaid,
   putOrderDelivery,
   getMyOrders,
   getAllOrders,
+  // paypal
   getPaypalClientId,
 };

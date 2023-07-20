@@ -86,8 +86,6 @@ const ProfilePage = () => {
   if (error)
     return <Message variant="danger">{error.response.data.message}</Message>;
 
-  console.log(typeof orders.data[0].createdAt);
-
   return (
     <Row>
       <Col md={3}>
