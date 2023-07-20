@@ -64,6 +64,11 @@ const postNewProductReview = async (body: {
   return response;
 };
 
+const getTopProducts = async () => {
+  const response = await instance.get(`${PRODUCTS_URL}/top`);
+  return response;
+};
+
 //---------- upload api
 
 const uploadProductImage = async (body: FormData) => {
@@ -182,6 +187,7 @@ export {
   deleteProduct,
   uploadProductImage,
   postNewProductReview,
+  getTopProducts,
   // user
   postSignup,
   postLogin,
