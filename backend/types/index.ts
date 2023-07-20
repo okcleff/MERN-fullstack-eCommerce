@@ -15,7 +15,7 @@ export interface IProduct {
   brand: string;
   category: string;
   description: string;
-  reviews: IReview;
+  reviews: IReview[];
   rating: number;
   numReviews: number;
   price: number;
@@ -33,7 +33,7 @@ export interface IUser {
 
 export interface IUserRequest extends Request {
   user: {
-    _id: string;
+    _id: Schema.Types.ObjectId;
     name: string;
   };
 }
