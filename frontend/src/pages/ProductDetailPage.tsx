@@ -18,6 +18,7 @@ import {
 import Rating from "../components/Rating";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import Meta from "../components/Meta";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
@@ -106,6 +107,8 @@ const ProductDetailPage = () => {
 
   return (
     <>
+      <Meta title={name} description={description} />
+
       <Link className="btn btn-light my-3" to="/">
         뒤로가기
       </Link>
